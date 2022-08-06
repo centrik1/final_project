@@ -22,7 +22,7 @@ spec:
         app: my-dep
     spec:
       containers:
-      - image: akash006/alation_web:latest
+      - image: akash006/sre_assignment:latest
         name: alation-web-n9fbk
         ports:
         - containerPort: 5000
