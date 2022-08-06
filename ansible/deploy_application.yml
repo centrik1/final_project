@@ -1,0 +1,9 @@
+-
+  name: Start Minikube cluster
+  hosts: all
+  tasks:
+    - name: Delete all previously deployed application
+      command: kubectl delete .
+
+    - name: Deployed application
+      command: kubectl create -f .
