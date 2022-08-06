@@ -10,8 +10,8 @@
 
     - name: Delete all previously deployed application
       command: kubectl delete .
-      chdir: /k8s
+        chdir: /k8s
 
     - name: Deployed application
       command: kubectl create -f /k8s/.
-      chdir: /k8s
+        chdir: /k8s
