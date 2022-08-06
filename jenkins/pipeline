@@ -59,16 +59,16 @@ pipeline {
               )
             }
         }
-        stage('Start Minikube cluster') {
-            steps{
-                  dir("ansible"){
-                    sh "ansible-playbook start_minikube.yml -i inventory.txt"
-                  }      
-              }
-        }
+        // stage('Start Minikube cluster') {
+        //     steps{
+        //           dir("ansible"){
+        //             sh "ansible-playbook start_minikube.yml -i inventory.txt"
+        //           }      
+        //       }
+        // }
         stage('Deploy application') {
             steps{
-                  dir("k8s"){
+                  dir("ansible"){
                     sh "ansible-playbook deploy_application.yml -i inventory.txt"
                   }      
               }
