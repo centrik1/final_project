@@ -4,8 +4,8 @@
   tasks:
     - name: Copy K8s mainifest files to servers
       ansible.builtin.copy:
-      src: ./k8s/
-      dest: /k8s
+        src: ./k8s/
+        dest: /k8s
       become: yes
 
     - name: Delete all previously deployed application
