@@ -6,7 +6,7 @@
       command: minikube delete
 
     - name: Start Minikube cluster
-      command: minikube start --nodes=2
+      command: minikube start
 
     - name: Minikube cluster status
       command: minikube status

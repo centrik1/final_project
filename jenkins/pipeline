@@ -59,6 +59,13 @@ pipeline {
               )
             }
         }
+        stage('Start Minikube cluster') {
+            steps{
+                  dir("ansible"){
+                    sh "ansible-playbook start_minikube.yml -i inventory.txt"
+                  }      
+              }
+          }
         }
           post {
             always {
