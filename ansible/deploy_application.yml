@@ -3,7 +3,7 @@
   hosts: all
   tasks:
     - name: Delete all previously deployed application
-      command: kubectl delete .
+      command: kubectl delete ../k8s/.
 
     - name: Deployed application
-      command: kubectl create -f .
+      command: kubectl create -f ../k8s/.
