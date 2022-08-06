@@ -1,0 +1,77 @@
+pipeline {
+    agent any
+    environment{
+		def inventoryFile=""
+	}
+    stages {
+        stage("Clean Up"){
+            steps {
+                deleteDir()
+            }
+        }
+        stage('Checkout code') {
+            steps{
+                checkout([$class: 'GitSCM', branches: [[name: 'refs/heads/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'git_token', url: 'https://github.com/centrik1/final_project.git']]])
+                }
+        }
+        stage('Upload inventory File') {
+            steps{
+                  script {
+                 
+                        def inputFile = input message: 'Upload file', parameters: [file(name: 'inventory.txt', description: 'Upload only Ansible inventory file')]
+                        def fileContent = readFile "${inputFile}"
+                        inventoryFile=inputFile
+                        echo ("Inventory File path : ${inputFile}")
+                        echo ("Inventory File path : ${inventoryFile}")
+                        echo("Inventory file Content : ${fileContent}") 
+                        }        
+              }
+          }
+        stage('Configure Ansible') {
+            steps{
+              parallel(
+                "Copy Inventory file": {
+                  dir("ansible"){
+                      sh "cp ${inventoryFile} ./"
+                    }
+                },
+                "Configure ansible config": {
+                  dir("ansible"){
+                    sh 'echo "[defaults]\nhost_key_checking = false" > ansible.cfg'
+                  }
+                }
+              )
+            }
+        }
+        stage('Verify Ansible') {
+            steps{
+              parallel(
+                "Verify inventory file": {
+                  dir("ansible"){
+                      sh "ansible all -m ping -i inventory.txt"
+                    }
+                },
+                "Verify default config file": {
+                  dir("ansible"){
+                    sh 'ls -1 | grep ansible.cfg'
+                  }
+                }
+              )
+            }
+        }
+        }
+          post {
+            always {
+              echo "I'll always execute !!!"
+            }
+            success {
+              echo "I'll only execute once job is successful"
+            }
+            failure {
+              echo "The job is failed"
+            }
+            cleanup {
+              echo "Run the steps in this after every other post condition has been evaluated"
+            }
+        }
+}
