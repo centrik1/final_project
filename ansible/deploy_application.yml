@@ -7,13 +7,8 @@
         src: ../k8s/
         dest: /k8s
       become: yes
-
-    - name: Delete all previously deployed application
-      command: kubectl delete .
-      args:
-        chdir: /k8s
-
+      
     - name: Deployed application
-      command: kubectl create -f /k8s/.
+      command: kubectl create -f .
       args:
         chdir: /k8s
